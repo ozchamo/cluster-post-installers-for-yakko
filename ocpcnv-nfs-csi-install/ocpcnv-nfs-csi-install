@@ -107,7 +107,7 @@ setup-nfs-provisioner() {
 	then
 		echo
 		echo "Path ${NFS_SERVER}:/${NFS_PATH} is available at the NFS server."
-		echo "NOTE: This script does not check for correct permissions."
+		echo "NOTE: This script does not check that the share has appropriate permssions"
 		echo
 	else
 		echo "ERROR: Path ${NFS_SERVER}:/${NFS_PATH} does not appear to be exported."
