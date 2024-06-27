@@ -166,7 +166,8 @@ then
 	exit 1
 fi
 
-OC=$(find . -name oc)
+# We search for an oc that's mostly up to date within the YAKKO dir - or not
+OC=$(find . -name oc | head -n 1)
 if [ -z "${OC}" ] 
 then
 	OC=$(which oc)
