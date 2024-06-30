@@ -1,7 +1,9 @@
 
-This script automates the installation of OpenShift Virtualisation using NFS as the storage provider with automatic setup.
+This script automates the installation of [OpenShift Virtualisation](https://docs.openshift.com/container-platform/4.16/virt/about_virt/about-virt.html) using the native [Kubernetes CSI NFS driver](https://github.com/kubernetes-csi/csi-driver-nfs) as the storage provider with automatic setup.
 
-USER DEFINED PARAMETERS:
+If you are using YAKKO 8.0+, can install YAKKO and then issue 'yakko buildfromtemplate 
+
+**USER DEFINED PARAMETERS:**
 
 These four parameters can be user defined:
 
@@ -10,18 +12,19 @@ These four parameters can be user defined:
 - VMSTORAGENAME: this is the directory name that nfs-csi will use if YAKKO sets all up automatically, which will only happen if both the above parameters are left blank. The default name is "vm-nfs-storage"
 - AUTO: If you want to break up the install of OCP VIRT and the nfs-csi driver in stages, set to Y (which is the default)
 
-Examples:
-- BYO NFS Server:  
+**EXAMPLES:**
+
+- **BYO NFS Server:**  
   NFSSERVER=192.168.1.10  
   NFSPATH=/mnt/openshift-virtvms  
   The above indicates that you will be using YOUR NFS server 192.168.1.10 and there is an existing share already created at /mnt/openshiftvirtvms. NOTE that both have to exist if you are using your own NFS server. YAKKO plays no part in this setup.
 
-- Use YAKKO's automatic ability to create, share and run an NFS server/share on the YAKKO host:  
+- **Use YAKKO's automatic ability to create, share and run an NFS server/share on the YAKKO host:**  
   NFSSERVER=  
   NFSPATH=  
   Leave both blank and YAKKO will create a NFS share on the YAKKO host in the virtual network, where the directory for NFS concontent will be in the the same directory YAKKO exists.
 
-- Use YAKKO's automatic ability to create, share and run an NFS server/share on the YAKKO host, where you specify where you want the share to reside:  
+- **Use YAKKO's automatic ability to create, share and run an NFS server/share on the YAKKO host, where you specify where you want the share to reside:**  
   NFSSERVER=  
   NFSPATH=/mnt/myvms  
   YAKKO will create an NFS share on /mnt/myvms on the YAKKO host in the virtual network (VMSTORAGENAME will be ignored)
