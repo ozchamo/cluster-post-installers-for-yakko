@@ -13,7 +13,7 @@ These four parameters can be user defined:
 Examples:
 - BYO NFS Server:
   NFSSERVER=192.168.1.10
-  NFSPATH=/mnt/openshiftvirtvms
+  NFSPATH=/mnt/openshift-virtvms
   The above indicates that you will be using YOUR NFS server 192.168.1.10 and there is an existing share already created at /mnt/openshiftvirtvms. NOTE that both have to exist if you are using your own NFS server. YAKKO plays no part in this setup.
 
 - Use YAKKO's automatic ability to create, share and run an NFS server/share on the YAKKO host:
