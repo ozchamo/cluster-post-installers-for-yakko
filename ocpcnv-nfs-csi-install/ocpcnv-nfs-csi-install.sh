@@ -158,10 +158,10 @@ setup-nfs-provisioner() {
 
 if [ "$#" -ne 0  ]
 then 
-	echo
-	echo "USAGE $0 [NFS-PATH [NFS-SERVER]]"
-	echo "      if not provided, NFS-SERVER will be resolved as the YAKKO host in the virtual network"
-	echo "      and NFS-PATH will default to 'YAKKO-DIR/$NFSPATH"
+	echo " USAGE: This takes not parameters, it can use the defaults as follows:"
+	echo "        if not provided, NFSSERVER will be resolved as the YAKKO host in the virtual network"
+	echo "        and NFS-PATH will default to 'YAKKO-DIR/$NFSPATH"
+	echo " OR:    You can edit NFSSERVER and NFSPATH as variables with the script"
 	echo
 	exit 1
 fi
@@ -193,7 +193,7 @@ then
 		NFSPATH=$(realpath .)/${VMSTORAGENAME}
 	fi
 
-	NFSSERVER=$(cat .lastclusterbuild | grep BASENETWORK | cut -f2 -d=).1
+	NFSSERVER=$(cat .clusterbuilddefaults | grep BASENETWORK | cut -f2 -d=).1
 
 	echo
 	echo "- NFS Path has been configured as $NFSPATH"
