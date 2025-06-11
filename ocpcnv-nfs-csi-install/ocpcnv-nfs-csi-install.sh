@@ -166,6 +166,21 @@ then
 	exit 1
 fi
 
+# You may want to have Nested virtualisation, right?\
+echo
+NESTEDVIRT=$(cat /sys/module/kvm_intel/parameters/nested)
+if [ "$NESTEDVIRT" eq "Y" ]
+then
+	echo "Nested Virtualisation is already ENABLED"
+else
+	echo "NESTED VIRTUALISATION IS NOT ENABLED"
+	echo "YOU MUST ENABLE IT FOR OCP VIRT TO WORK IN NESTED ENVS"
+	echo "see: 'cat /sys/module/kvm_intel/parameters/nested')"
+	echo "visit: https://docs.fedoraproject.org/en-US/quick-docs/using-nested-virtualization-in-kvm/"
+	echo
+	exit 1
+fi
+
 # We search for an oc that's mostly up to date within the YAKKO dir - or not
 OC=$(find . -name oc | head -n 1)
 if [ -z "${OC}" ] 
@@ -240,7 +255,8 @@ kind: StorageClass
 metadata:
   name: nfs-csi
   annotations:
-    storageclass.kubernetes.io/is-default-class: "true"
+#   storageclass.kubernetes.io/is-default-class: "true"
+    storageclass.kubernetes.io/is-default-virt-class: "true"
 provisioner: nfs.csi.k8s.io
 parameters:
   server: ${NFSSERVER}
@@ -310,7 +326,7 @@ HEREDOC
 
 	while true 
 	do
-		${OC} events HyperConverged kubevirt-hyperconverged -n openshift-cnv | grep "Created container virt-handler" > /dev/null
+		${OC} events HyperConverged kubevirt-hyperconverged -n openshift-cnv | grep "Created container: virt-handler" > /dev/null
 		[ $? -eq 0 ] && break
 		sleep 10
 	done
