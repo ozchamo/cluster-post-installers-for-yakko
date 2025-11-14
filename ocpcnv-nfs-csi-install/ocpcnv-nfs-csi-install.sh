@@ -169,7 +169,7 @@ fi
 # You may want to have Nested virtualisation, right?\
 echo
 NESTEDVIRT=$(cat /sys/module/kvm_intel/parameters/nested)
-if [ "$NESTEDVIRT" eq "Y" ]
+if [ "$NESTEDVIRT" == "Y" ]
 then
 	echo "Nested Virtualisation is already ENABLED"
 else
