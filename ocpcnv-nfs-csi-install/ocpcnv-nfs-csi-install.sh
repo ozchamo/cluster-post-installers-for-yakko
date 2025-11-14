@@ -9,7 +9,10 @@
 # USER DEFINED PARAMETERS:
 #==========================================================================================
 #
-# These four parameters can be user defined:
+# These five parameters can be user defined:
+#
+# Choose CNV version numer (eg 4.20.0) or leave as latest
+OCPCNVVERSION=latest
 #
 # NFSSERVER can be YOUR NFS server, else YAKKO will enable NFS on the YAKKO host and set this address up automatically
 NFSSERVER=""     
@@ -276,6 +279,21 @@ deletionPolicy: Delete
 parameters:
 HEREDOC
 
+if [ $OCPCNVVERSION = latest ]
+then
+	CLUSTERVERSION=$(${OC} get clusterversion | grep version | awk '{ print $2 }' | cut -f1,2 -d .)
+	OCPCNVVERSION=$CLUSTERVERSION.0
+fi
+
+# Query the marketplace and retrieve the requested instance
+echo "Checking if kubevirt-hyperconverged version $OCPCNVVERSION is available:"
+${OC} get packagemanifest kubevirt-hyperconverged  -n openshift-marketplace -o yaml | grep "name: kubevirt-hyperconverged-operator.v${OCPCNVVERSION}"
+if [ $? -ne 0 ]
+then
+	echo "Could not retrieve kubevirt-hyperconverged versino for OCP $OCPCNVVERSION"
+	exit 1
+fi
+echo "PASS"
 
 process-stage 20 "Subscribe OCP CNV Operator" && {
 ${OC} apply -f - <<HEREDOC
@@ -302,7 +320,7 @@ spec:
   source: redhat-operators
   sourceNamespace: openshift-marketplace
   name: kubevirt-hyperconverged
-  startingCSV: kubevirt-hyperconverged-operator.v4.15.2
+  startingCSV: kubevirt-hyperconverged-operator.v${OCPCNVVERSION}
   channel: "stable" 
 HEREDOC
 
